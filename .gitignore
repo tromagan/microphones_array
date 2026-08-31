@@ -1,0 +1,14 @@
+app_iperfclient_system.ide.zip
+bd_test_cnt.tcl
+description/
+docs/
+host/
+smart_zynq_sl_micr_matrix_wrapper.bit
+smart_zynq_sl_micr_matrix_wrapper.ltx
+smart_zynqsl_prj/
+smart_zynqsl_vitis/
+
+zynq_board_prj/*
+vitis/*
+
+*.pdf
