@@ -43,7 +43,7 @@ module ics52000_line_controller
 (*IOB = "TRUE"*)
 logic   r_sd_iob = 1'b0;
 
-logic   [  7 : 0 ]  r_bit_cnt;
+logic   [  7 : 0 ]  r_bit_cnt = 8'd0;
 logic               r_bit_cnt_en = 1'b0;
 //logic   [  2 : 0 ]  r_mic_id;
 (*MARK_DEBUG = "TRUE"*)
@@ -64,16 +64,23 @@ always_ff @(negedge CLK)
     r_sd_iob <=#Z SD; 
 
 always_ff @(posedge CLK)
-if(FRAME_START == 1'b1)
+if(SRST == 1'b1)
 begin
     r_bit_cnt <=#Z 8'd0;
-    r_bit_cnt_en <=#Z 1'b1;
+    r_bit_cnt_en <=#Z 1'b0;
 end
 else
 begin
-    r_bit_cnt <=#Z r_bit_cnt + 1'b1;
-    if(&r_bit_cnt == 1'b1)
-        r_bit_cnt_en <=#Z 1'b0;
+    if(FRAME_START == 1'b1)
+    begin
+        r_bit_cnt <=#Z 8'd0;
+        r_bit_cnt_en <=#Z 1'b1;
+    end
+    else
+    begin
+        if(r_bit_cnt_en == 1'b1)
+            r_bit_cnt <=#Z r_bit_cnt + 1'b1;
+    end
 end
 
 always_ff @(posedge CLK)
