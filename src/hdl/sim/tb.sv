@@ -26,7 +26,7 @@ module tb();
 bit CLK;
 
 logic               r_rst = 1'b1;
-logic   [ 7 : 0 ]   w_sck, w_ws;
+logic               w_sck, w_ws;
 tri     [ 7 : 0 ]   w_sd;
 logic   [ 8 : 0 ]   w_wso [7 : 0];
 
@@ -64,14 +64,14 @@ ics52000_matrix_wrapper ics52000_matrix_wrapper
     .SD         ( w_sd      )
 );
 
-assign w_wso[0][0] = w_ws[0];
-assign w_wso[1][0] = w_ws[1];
-assign w_wso[2][0] = w_ws[2];
-assign w_wso[3][0] = w_ws[3];
-assign w_wso[4][0] = w_ws[4];
-assign w_wso[5][0] = w_ws[5];
-assign w_wso[6][0] = w_ws[6];
-assign w_wso[7][0] = w_ws[7];
+assign w_wso[0][0] = w_ws;
+assign w_wso[1][0] = w_ws;
+assign w_wso[2][0] = w_ws;
+assign w_wso[3][0] = w_ws;
+assign w_wso[4][0] = w_ws;
+assign w_wso[5][0] = w_ws;
+assign w_wso[6][0] = w_ws;
+assign w_wso[7][0] = w_ws;
 
 // parameter line0_nums = {8'h07, 8'h06, 8'h05, 8'h04, 8'h03, 8'h02, 8'h55, 8'hAA};
 // parameter line1_nums = {8'h0F, 8'h0E, 8'h0D, 8'h0C, 8'h0B, 8'h0A, 8'h55, 8'hAA};
@@ -101,7 +101,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line0
     (
-        .SCK    ( w_sck[0]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[0][g]           ),
         .WSO    ( w_wso[0][g+1]         ),
         .SDO    ( w_sd [0]              )
@@ -113,7 +113,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line1
     (
-        .SCK    ( w_sck[1]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[1][g]           ),
         .WSO    ( w_wso[1][g+1]         ),
         .SDO    ( w_sd [1]              )
@@ -125,7 +125,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line2
     (
-        .SCK    ( w_sck[2]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[2][g]           ),
         .WSO    ( w_wso[2][g+1]         ),
         .SDO    ( w_sd [2]              )
@@ -137,7 +137,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line3
     (
-        .SCK    ( w_sck[3]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[3][g]           ),
         .WSO    ( w_wso[3][g+1]         ),
         .SDO    ( w_sd [3]              )
@@ -149,7 +149,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line4
     (
-        .SCK    ( w_sck[4]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[4][g]           ),
         .WSO    ( w_wso[4][g+1]         ),
         .SDO    ( w_sd [4]              )
@@ -161,7 +161,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line5
     (
-        .SCK    ( w_sck[5]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[5][g]           ),
         .WSO    ( w_wso[5][g+1]         ),
         .SDO    ( w_sd [5]              )
@@ -173,7 +173,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line6
     (
-        .SCK    ( w_sck[6]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[6][g]           ),
         .WSO    ( w_wso[6][g+1]         ),
         .SDO    ( w_sd [6]              )
@@ -185,7 +185,7 @@ begin : gloop_sim_mic
     )
     sim_mic_ics52000_line7
     (
-        .SCK    ( w_sck[7]              ),
+        .SCK    ( w_sck                 ),
         .WS     ( w_wso[7][g]           ),
         .WSO    ( w_wso[7][g+1]         ),
         .SDO    ( w_sd [7]              )
@@ -201,6 +201,16 @@ initial
 begin
 
     repeat(20)  @(posedge CLK);
+    r_rst <= 1'b0;
+
+    #100_000;
+    r_rst <= 1'b1;
+    repeat(20)  @(posedge CLK);
+    r_rst <= 1'b0;
+
+    #100_000;
+    r_rst <= 1'b1;
+    repeat(200)  @(posedge CLK);
     r_rst <= 1'b0;
     
     forever
